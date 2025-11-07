@@ -1,30 +1,19 @@
-const sqlite3 = require('sqlite3').verbose();
+// bases/database.js
+const { Pool } = require('pg');
 
-// 📦 Conectar a la base de datos (se crea si no existe)
-const db = new sqlite3.Database('./bases/cantina.db', (err) => {
-    if (err) {
-        console.error('❌ Error al conectar a la base de datos:', err.message);
-    } else {
-        console.log('✅ Conexión exitosa a SQLite.');
-    }
+// Configuración de conexión a tu base de datos de Render
+const pool = new Pool({
+  host: 'dpg-d44f9d9r0fns73avqklg-a',   // 👈 Hostname de Render
+  port: 5432,                           // Puerto por defecto de PostgreSQL
+  database: 'cantinadb_nwv5',           // Nombre de tu base
+  user: 'cantinadb_nwv5_user',          // Usuario
+  password: '8htph3DuFD52kDZGBD0jtLrwfw9OR6Ps',         // 🔐 Copiá la contraseña que te da Render
+  ssl: { rejectUnauthorized: false }    // Importante para Render
 });
 
-// 🧱 Crear tabla productos si no existe
-db.run(`
-    CREATE TABLE IF NOT EXISTS productos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        precio REAL NOT NULL,
-        cantidad INTEGER DEFAULT 0,
-        imagen TEXT,
-        descripcion TEXT
-    )
-`, (err) => {
-    if (err) {
-        console.error('❌ Error al crear la tabla productos:', err.message);
-    } else {
-        console.log('📦 Tabla "productos" lista para usar.');
-    }
-});
+// Test de conexión
+pool.connect()
+  .then(() => console.log('✅ Conectado correctamente a PostgreSQL en Render'))
+  .catch(err => console.error('❌ Error al conectar:', err.message));
 
-module.exports = db;
+module.exports = pool;

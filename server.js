@@ -4,7 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer'); // 📦 Para subir archivos
 const dbFuncs = require('./dbFunciones');
-const db = require('./bases/database');
+const pool = require('./bases/database');
+const { crearTablas } = require('./bases/crearTablas');
+
 
 const app = express();
 const PORT = 3000;
