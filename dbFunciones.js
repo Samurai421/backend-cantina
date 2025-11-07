@@ -89,7 +89,7 @@ async function crearTablaUsuarios() {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS usuarios (
         id SERIAL PRIMARY KEY,
-        user TEXT UNIQUE NOT NULL,
+        nameuser TEXT UNIQUE NOT NULL,
         pass TEXT NOT NULL,
         email TEXT
       )
@@ -102,11 +102,11 @@ async function crearTablaUsuarios() {
 
 
 // Registrar usuario
-async function agregarUsuario(user, pass, email, callback) {
+async function agregarUsuario(nameuser, pass, email, callback) {
   try {
     const result = await pool.query(
-      `INSERT INTO usuarios (user, pass, email) VALUES ($1, $2, $3) RETURNING id`,
-      [user, pass, email]
+      `INSERT INTO usuarios (nameuser, pass, email) VALUES ($1, $2, $3) RETURNING id`,
+      [nameuser, pass, email]
     );
     if (callback) callback(null, result.rows[0].id);
   } catch (err) {
@@ -115,12 +115,12 @@ async function agregarUsuario(user, pass, email, callback) {
 }
 
 
-// Obtener usuario por username y password
-async function obtenerUsuario(user, pass, callback) {
+// Obtener usuario por nameusername y password
+async function obtenerUsuario(nameuser, pass, callback) {
   try {
     const result = await pool.query(
-      `SELECT * FROM usuarios WHERE user = $1 AND pass = $2`,
-      [user, pass]
+      `SELECT * FROM usuarios WHERE nameuser = $1 AND pass = $2`,
+      [nameuser, pass]
     );
     callback(null, result.rows[0]);
   } catch (err) {

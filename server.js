@@ -153,28 +153,28 @@ app.post('/productos/comprar/:id', (req, res) => {
 
 // Registrar usuario
 app.post('/usuarios', (req, res) => {
-    const { user, pass, email } = req.body;
+    const { nameuser, pass, email } = req.body;
 
-    dbFuncs.agregarUsuario(user, pass, email, (err, id) => {
+    dbFuncs.agregarUsuario(nameuser, pass, email, (err, id) => {
         if (err) {
             if (err.message.includes('UNIQUE')) {
                 return res.status(400).json({ error: 'El usuario ya existe' });
             }
             return res.status(500).json({ error: err.message });
         }
-        res.json({ id, user, email });
+        res.json({ id, nameuser, email });
     });
 });
 
 // Login usuario
 app.post('/usuarios/login', (req, res) => {
-    const { user, pass } = req.body;
+    const { nameuser, pass } = req.body;
 
-    dbFuncs.obtenerUsuario(user, pass, (err, row) => {
+    dbFuncs.obtenerUsuario(nameuser, pass, (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!row) return res.status(401).json({ error: 'Usuario o contraseña incorrectos' });
 
-        res.json({ id: row.id, user: row.user, email: row.email });
+        res.json({ id: row.id, nameuser: row.nameuser, email: row.email });
     });
 });
 
